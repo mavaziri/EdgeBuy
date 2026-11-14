@@ -83,7 +83,7 @@ export const reducer = (state: State, action: Action): State => {
         toasts: state.toasts.map((toastItem) =>
           toastItem.id === action.toast.id
             ? { ...toastItem, ...action.toast }
-            : toastItem
+            : toastItem,
         ),
       };
 
@@ -106,7 +106,7 @@ export const reducer = (state: State, action: Action): State => {
                 ...toastItem,
                 open: false,
               }
-            : toastItem
+            : toastItem,
         ),
       };
     }
@@ -120,7 +120,7 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         toasts: state.toasts.filter(
-          (toastItem) => toastItem.id !== action.toastId
+          (toastItem) => toastItem.id !== action.toastId,
         ),
       };
   }

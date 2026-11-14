@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { signOut } from '@/actions/auth.actions';
+import { useCurrentProfile } from '@/hooks/use-current-profile';
 
 interface NavbarProps {
   user?: {
@@ -19,6 +20,7 @@ interface NavbarProps {
 
 export function Navbar({ user, cartCount = 0 }: NavbarProps) {
   const pathname = usePathname();
+  const { data: profile } = useCurrentProfile(Boolean(user));
 
   const handleSignOut = async () => {
     await signOut();
@@ -40,7 +42,7 @@ export function Navbar({ user, cartCount = 0 }: NavbarProps) {
               href="/"
               className={cn(
                 'text-sm font-medium transition-colors hover:text-primary',
-                pathname === '/' ? 'text-primary' : 'text-muted-foreground'
+                pathname === '/' ? 'text-primary' : 'text-muted-foreground',
               )}
             >
               Products
@@ -52,7 +54,7 @@ export function Navbar({ user, cartCount = 0 }: NavbarProps) {
                   'text-sm font-medium transition-colors hover:text-primary',
                   pathname === '/orders'
                     ? 'text-primary'
-                    : 'text-muted-foreground'
+                    : 'text-muted-foreground',
                 )}
               >
                 Orders
@@ -64,6 +66,26 @@ export function Navbar({ user, cartCount = 0 }: NavbarProps) {
         <div className="flex items-center gap-4">
           {user ? (
             <>
+              <Link
+                href="/profile"
+                aria-label="Your profile"
+                className="flex items-center gap-2"
+              >
+                <Avatar className="h-8 w-8">
+                  <AvatarImage
+                    src={profile?.image ?? user.image ?? undefined}
+                  />
+                  <AvatarFallback>
+                    {(profile?.name ??
+                      user.name ??
+                      user.email ??
+                      'U')[0]?.toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="hidden text-sm font-medium sm:inline">
+                  {profile?.name ?? user.name ?? 'Profile'}
+                </span>
+              </Link>
               <Link href="/wishlist">
                 <Button variant="ghost" size="icon" className="relative">
                   <Heart className="h-5 w-5" />
@@ -81,15 +103,7 @@ export function Navbar({ user, cartCount = 0 }: NavbarProps) {
                 </Button>
               </Link>
 
-              <div className="flex items-center gap-3">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={user.image ?? undefined} />
-                  <AvatarFallback>
-                    {user.name?.[0]?.toUpperCase() ??
-                      user.email?.[0]?.toUpperCase() ??
-                      'U'}
-                  </AvatarFallback>
-                </Avatar>
+              <div className="flex items-center">
                 <Button variant="ghost" size="sm" onClick={handleSignOut}>
                   Sign Out
                 </Button>

@@ -17,10 +17,10 @@ interface ProductPageProps {
 // SSG: Generate static pages for the first 20 products at build time
 export async function generateStaticParams() {
   const productsService = ApiServiceFactory.getProductsService();
-  const products = await productsService.getAllProducts();
+  const page = await productsService.getProductsPage(0, 20);
 
   // Generate paths for the first 20 products (adjust as needed)
-  return products.slice(0, 20).map((product) => ({
+  return page.products.map((product) => ({
     id: product.id.toString(),
   }));
 }

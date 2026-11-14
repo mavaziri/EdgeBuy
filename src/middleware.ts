@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
 
 export default auth((req) => {
@@ -7,7 +7,8 @@ export default auth((req) => {
   const isProtectedPage =
     req.nextUrl.pathname.startsWith('/dashboard') ||
     req.nextUrl.pathname.startsWith('/orders') ||
-    req.nextUrl.pathname.startsWith('/wishlist');
+    req.nextUrl.pathname.startsWith('/wishlist') ||
+    req.nextUrl.pathname.startsWith('/profile');
 
   if (isProtectedPage && !isLoggedIn) {
     return NextResponse.redirect(new URL('/auth/signin', req.url));

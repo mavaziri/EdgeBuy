@@ -1,5 +1,5 @@
-import { ApiServiceFactory } from '@/services/products.service';
 import { ProductCardList } from '@/components/products/product-card-list';
+import { ProductProcessingPanel } from '@/components/products/product-processing-panel';
 
 import { auth } from '@/auth';
 import { WishlistServiceFactory } from '@/services/wishlist.service';
@@ -8,13 +8,12 @@ import { WishlistServiceFactory } from '@/services/wishlist.service';
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const productsService = ApiServiceFactory.getProductsService();
-  const products = await productsService.getAllProducts();
   const session = await auth();
 
   const wishlistService = WishlistServiceFactory.getWishlistService();
 
   let initialWishlist: number[] = [];
+
   if (session?.user) {
     const wishlistObj = await wishlistService.getWishlist(session.user.id);
     initialWishlist = wishlistObj.items.map((item) => item.productId);
@@ -29,8 +28,10 @@ export default async function HomePage() {
         </p>
       </div>
 
+      <div className="sticky top-16 z-40 mb-6">
+        <ProductProcessingPanel />
+      </div>
       <ProductCardList
-        products={products}
         isAuthenticated={!!session?.user}
         initialWishlist={initialWishlist}
       />

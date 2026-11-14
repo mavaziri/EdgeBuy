@@ -4,7 +4,7 @@ A full-featured e-commerce application built with Next.js 15, TypeScript, Prisma
 
 ## Features
 
-- 🛍️ **Product Browsing**: Browse products from FakeStore API
+- 🛍️ **Product Browsing**: Browse paginated products from DummyJSON
 - 🛒 **Shopping Cart**: Persistent cart with Prisma
 - ❤️ **Wishlist**: Save favorite products
 - 📦 **Order Management**: Track order history and status
@@ -24,7 +24,7 @@ A full-featured e-commerce application built with Next.js 15, TypeScript, Prisma
 | Auth          | NextAuth.js v5                  |
 | UI Components | shadcn/ui                       |
 | Styling       | Tailwind CSS                    |
-| Product API   | FakeStore API                   |
+| Product API   | DummyJSON                       |
 | State (Read)  | React Query                     |
 | State (Write) | useActionState + Server Actions |
 | Events        | Custom Event Bus                |
@@ -59,7 +59,7 @@ src/
 ### Prerequisites
 
 - Node.js 20+
-- npm or yarn
+- Yarn 1.x
 
 ### Installation
 
@@ -67,7 +67,7 @@ src/
 2. Install dependencies:
 
 ```bash
-npm install
+yarn install
 ```
 
 3. Create `.env` file:
@@ -87,27 +87,35 @@ NEXTAUTH_URL="http://localhost:3000"
 5. Initialize the database:
 
 ```bash
-npm run db:push
+yarn db:push
 ```
 
 6. Start the development server:
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 7. Open [http://localhost:3000](http://localhost:3000)
 
 ## Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run db:push` - Push Prisma schema to database
-- `npm run db:studio` - Open Prisma Studio
+- `yarn dev` - Start development server
+- `yarn build` - Build for production
+- `yarn start` - Start production server
+- `yarn lint` - Run ESLint
+- `yarn test` - Run service tests
+- `yarn db:push` - Push Prisma schema to database
+- `yarn db:studio` - Open Prisma Studio
 
 ## Features Detail
+
+### Catalog Analysis
+
+The sticky Analyze catalog control starts a fresh, independent pass through the
+catalog. Each batch is fetched and summarized by an async generator, then
+displayed before the next page is requested. Progress and completed batches
+remain visible if the analysis is cancelled or a request fails.
 
 ### Authentication
 
