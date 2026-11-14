@@ -131,6 +131,17 @@ export function ProductProcessingPanel() {
     setStatus('cancelled');
   };
 
+  const resetProcessing = (): void => {
+    runIdRef.current += 1;
+    controllerRef.current?.abort();
+    controllerRef.current = null;
+    setInsights([]);
+    setProcessedCount(0);
+    setTotalCount(null);
+    setErrorMessage(null);
+    setStatus('idle');
+  };
+
   const progress =
     totalCount && totalCount > 0
       ? Math.round((processedCount / totalCount) * 100)
@@ -152,11 +163,9 @@ export function ProductProcessingPanel() {
           >
             {status === 'processing' ? 'Analyzing...' : 'Analyze catalog'}
           </Button>
-          {status === 'idle' && (
-            <p className="text-sm text-muted-foreground" role="status">
-              Ready to analyze the catalog. Processed 0 of ... products (0%).
-            </p>
-          )}
+          <Button variant="outline" onClick={resetProcessing}>
+            Reset
+          </Button>
           {status === 'processing' && (
             <Button variant="outline" onClick={cancelProcessing}>
               Cancel
@@ -164,6 +173,11 @@ export function ProductProcessingPanel() {
           )}
         </div>
 
+        {status === 'idle' && (
+          <p className="text-sm text-muted-foreground" role="status">
+            Ready to analyze the catalog. Processed 0 of ... products (0%).
+          </p>
+        )}
         {status === 'processing' && (
           <p
             className="text-sm text-muted-foreground"
